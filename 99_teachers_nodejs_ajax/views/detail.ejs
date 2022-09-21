@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('header.ejs') %>
+    <div class="container">
+        <h3>중고차 상세보기</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>번호</th>
+                <td><%=data.cno%></td>
+            </tr>
+            <tr>
+                <th>차종</th>
+                <td><%=data.name%></td>
+            </tr>
+            <tr>
+                <th>가격</th>
+                <td><%=data.price%></td>
+            </tr>
+            <tr>
+                <th>회사</th>
+                <td><%=data.company%></td>
+            </tr>
+            <tr>
+                <th>연식</th>
+                <td><%=data.year%></td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <a class="btn btn-info" href="/home">목록</a>
+                    <a class="btn btn-info" href="/">메인</a>
+                    <a class="btn btn-info" href="/input">새 정보 등록</a>
+                    <a class="btn btn-info" href="/modify/<%=data.cno%>">수정</a>
+                    <a class="btn btn-info" href="/delete/<%=data.cno%>">삭제</a>
+                </th>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

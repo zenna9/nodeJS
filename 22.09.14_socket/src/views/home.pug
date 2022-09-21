@@ -1,0 +1,29 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Noom
+    body 
+        header 
+            h1 Noom 
+            hr
+            h3 check the rooms that you can enter 
+            div#ableRooms
+        main 
+            div#welcome
+                form
+                    input(type="text", placeholder="room name", required)
+                    button Enter Room,.,.,.
+            div#room 
+                h3 
+                ul 
+                form#name
+                    input(type="text", placeholder="nickname", required)
+                    button nickname
+                form#msg
+                    input(placeholder="message", required, type="text")
+                    button send
+    script(src="/socket.io/socket.io.js") 
+    script(src="/public/js/app.js") 

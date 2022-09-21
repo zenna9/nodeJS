@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="container">
+    <h1>중고차 쇼핑몰</h1>
+    <!-- 입력 영역 -->
+    <form action="#" id="carForm">
+        <table class="table table-bordered">
+            <tr>
+                <th>차종</th>
+                <td><input type="text" name="name" value="TEST"></td>
+            </tr>
+            <tr>
+                <th>가격</th>
+                <td><input type="text" name="price" value="15000"></td>
+            </tr>
+            <tr>
+                <th>회사</th>
+                <td><input type="text" name="company" value="TESLA"></td>
+            </tr>
+            <tr>
+                <th>연식</th>
+                <td><input type="text" name="year" value="2019"></td>
+            </tr>
+            <tr>
+                <th colspan="2">
+                    <input type="submit" value="등록">
+                </th>
+            </tr>
+        </table>
+    </form>
+    <!-- 검색 영역 -->
+    검색 : <input type="text" id="searchInput" placeholder="검색어 입력">
+    <input type="button" value="검색" id="searchBtn">
+    <!-- 목록 영역 -->
+    <div id="listBox">
+        <table class="table table-bordered">
+            <thead>
+                <th>번호</th>
+                <th>차종</th>
+                <th>가격</th>
+                <th>제조사</th>
+                <th>연식</th>
+                <th>별점</th>
+                <th>삭제</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/underscore@1.13.4/underscore-umd-min.js"></script>
+    <script>
+        const template = `<%
+            carList.forEach(function(car) {
+        %>
+            <tr>
+                <td><%=car.cno %></td>
+                <td><%=car.name %></td>
+                <td><%=car.price %></td>
+                <td><%=car.company %></td>
+                <td><%=car.year %></td>
+                <td>
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                        <option selected>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </td>
+                <td><button>Delete</button></td>
+            </tr>
+        <%
+            }); 
+        %>`;
+
+        let carList = [];
+        
+        myGetList("/list")
+
+        function drawTable(carList) {
+            var render = _.template(template);
+            var html = render({carList});
+            var tbody = document.querySelector("#listBox tbody");
+            tbody.innerHTML = html;
+        }
+        drawTable(carList);
+
+        function finder2(carList, keyword) {
+            var searchList = carList.filter((car)=>{
+                var idx = (car.name.toLowerCase()).indexOf(keyword.toLowerCase());
+                return idx != -1;
+            });
+            return searchList;
+        }
+
+        var searchInput = document.querySelector("#searchInput");
+        searchInput.addEventListener('keyup', (e)=> {
+            var keyword = e.currentTarget.value;
+            var searchList = finder2(carList, keyword);
+            drawTable(searchList);
+        });
+
+        function regexFinder(carList, keyword) {
+            var searchList = carList.filter((car)=>{
+                let text = car.name.toLowerCase();
+                let result = text.match(keyword.toLowerCase());
+                return result != null;
+            });
+            
+            return searchList;
+        }
+
+
+        function myGetList(url) {
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+                if(xhr.status==200 && xhr.readyState==4) {
+                    let text = xhr.responseText;
+                    carList = JSON.parse(text).carList
+                    drawTable(carList);
+                }
+            }
+            xhr.open("get", url, true);
+            xhr.send();
+        }
+
+
+        let carForm = document.getElementById("carForm");
+        carForm.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            let name = e.currentTarget.name.value;
+            let price = e.currentTarget.price.value;
+            let company = e.currentTarget.company.value;
+            let year = e.currentTarget.year.value;
+
+            console.log(name, price, company, year);
+
+            let xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if(xhr.status==200 && xhr.readyState==4) {
+                    let text = xhr.responseText;
+                    carList = JSON.parse(text).carList
+                    drawTable(carList);
+                }
+            }
+            xhr.open('post', "/insert", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            let queryString = `name=${name}&price=${price}&company=${company}&year=${year}`;
+            console.log(queryString);
+            xhr.send(queryString);
+        });
+    </script>
+</body>
+</html>

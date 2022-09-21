@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('header.ejs') %>
+    <div class="container">
+        <h3>중고차 정보 수정</h3>
+        <form action="/modify" method="POST">
+            <table class="table table-bordered">
+                <tr>
+                    <th>번호</th>
+                    <td><%=data.cno%>
+                        <input type="hidden" name="cno" value="<%=data.cno%>"></td>
+                </tr>
+                <tr>
+                    <th>차종</th>
+                    <td><input type="text" name="name" value="<%=data.name%>"></td>
+                </tr>
+                <tr>
+                    <th>가격</th>
+                    <td><input type="text" name="price" value="<%=data.price%>"></td>
+                </tr>
+                <tr>
+                    <th>회사</th>
+                    <td><input type="text" name="company" value="<%=data.company%>"></td>
+                </tr>
+                <tr>
+                    <th>연식</th>
+                    <td><input type="text" name="year" value="<%=data.year%>"></td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <input type="submit" value="수정완료">
+                    </th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

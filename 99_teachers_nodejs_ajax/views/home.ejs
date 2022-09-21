@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('header.ejs') %>
+    <div class="container">
+        <h3>중고차 목록</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>번호</th>
+                <th>차종</th>
+                <th>가격</th>
+                <th>제조사</th>
+                <th>연식</th>
+            </tr>
+            <%
+                carList.forEach(function(car) {
+            %>
+            <tr>
+                <td><%=car.cno %></td>
+                <td><a href="/detail/<%=car.cno %>"><%=car.name %></a></td>
+                <td><%=car.price %></td>
+                <td><%=car.company %></td>
+                <td><%=car.year %></td>
+            </tr>
+            <%
+                }); 
+            %>
+        </table>
+        <a class="btn btn-info" href="/input">입력</a> 
+        <a class="btn btn-info" href="/">홈페이지</a>
+    </div>
+</body>
+</html>
