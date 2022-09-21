@@ -1,13 +1,19 @@
 import http from "http";
 import SocketIO from "socket.io";
 import express from 'express';
+let cons = require('consolidate');
 
 const app = express();
+// -----------------------
+app.engine('html', cons.swig)
+// app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
+// -----------------------
+// app.set("view engine","pug");
 
-app.set("view engine","pug");
 app.set("views",__dirname+"/views"); //views로 가게 함
 app.use("/public", express.static(__dirname + "/public"));
-//app.use메서드를 사용해, public이 src 안의 public이라고 지정해줌. 
+// app.use메서드를 사용해, public이 src 안의 public이라고 지정해줌. 
 
 app.get("/", (req,res)=>res.render("home"));
 app.get("/*", (req,res)=>res.redirect("/"));
@@ -28,14 +34,14 @@ wsServer.on("connection",(socket)=>{ // 이벤트 핸들러로 connection을 추
         socket.join(roomName);
         // console.log(socket.rooms)
         // socket.to(roomName).emit("welcome")
-        socket.to(roomName).emit("welcome", socket.nickname);
+        socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
         // 전체에게 사용 가능한 채팅방을 보여주는 기능
         wsServer.sockets.emit("room_change", publicRooms());
     });
 
     // 완전히 연결이 끊기기 전에 실행
     socket.on("disconnecting", ()=>{ 
-        socket.rooms.forEach(room=>socket.to(room).emit("bye", socket.nickname))
+        socket.rooms.forEach(room=>socket.to(room).emit("bye", socket.nickname, countRoom(room)-1))
         //socket.rooms : 접속중인 채팅룸 set객체
     });
     socket.on("disconnect", ()=>{ // 완전히 연결이 끊기고 실행
@@ -72,3 +78,11 @@ function publicRooms(){
     })
     return publicRooms;
 }
+
+// let know how many member in
+function countRoom(roomName){
+    return wsServer.sockets.adapter.rooms.get(roomName)?.size;
+    // ? : if exist, get count of members
+
+}
+

@@ -8,15 +8,6 @@ form.addEventListener("submit",handleRoomSubmit);
 room.hidden = true;
 let roomName;
 
-// 입장 가능한 방 목록
-// function setRoomList(roomList){
-//     roomList.forEach(element => {
-//         let li = document.createElement(li);
-//         li.innerText = element;
-//         ableRooms.appendChild(li);
-//     });
-// }
-
 // 메시지 입력창 보이기
 function showRoom(){
     welcome.hidden = true;
@@ -67,10 +58,14 @@ function handleMessageSubmit(event){
     input.value="";
 }
 
-socket.on("welcome", (nickname)=>{
+socket.on("welcome", (nickname, newCount)=>{
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName} (${newCount})`;
     addMessage(`${nickname} joined!`);
 })
-socket.on("bye", (nickname)=>{
+socket.on("bye", (nickname, newCount)=>{
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room ${roomName} (${newCount})`;
     addMessage(`${nickname} left...`)
 })
 socket.on("new_message",(msg)=>{
