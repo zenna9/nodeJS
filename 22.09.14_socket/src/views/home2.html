@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>client_socket_ex</title>
+    <script src="http://code.jquery.com/jquery.js"></script>
+</head>
+<body>
+    <h1>client_socket_ex</h1>
+    <fieldset>
+        <legend>Login</legend>
+        <input type="text" id="user_id" value="user01"/>
+        <input type="text" id="user_name" value="홍길동"/>
+        <input type="button" id="login_btn" value="Login" />
+    </fieldset>
+    <fieldset>
+        <legend>Message</legend>
+        보내는 사람 ID : <input type="text" id="sender" value="user01" /><br/>
+        받는 사람 ID : <input type="text" id="recepient" value="All" /><br/>
+        메세지 : <input type="text" id="data" value="hello" />
+        <input type="button" id="send_btn" value="Send" />
+    </fieldset>
+    <fieldset>
+        <div id="resultBox"></div>
+    </fieldset>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    function printMessage(message) {
+        console.log(message);
+        $('#resultBox').append(message);
+    }
+
+    const socket = io();
+    socket.on('connect', function(){
+        printMessage('서버 접속 성공!');
+
+        socket.emit('news', {"hello":"world"});
+        socket.on('msg', function(data) {
+            //console.log(data);
+            
+        });
+
+        $('#login_btn').click(function(event) {
+            event.preventDefault();
+            var loginData = {
+                userId: $('#user_id').val(),
+                userName: $('#user_name').val()
+            }
+            socket.emit('login', loginData, function(serverMessage) {
+                console.log(serverMessage);
+            });
+        });
+
+        $('#send_btn').click(function(event) {
+            event.preventDefault();
+
+        });
+    });
+    
+
+    socket.on('disconnect', function() {
+        console.log('disconnect...');
+    });
+    </script>
+</body>
+</html>

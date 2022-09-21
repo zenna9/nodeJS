@@ -9,13 +9,13 @@ room.hidden = true;
 let roomName;
 
 // 입장 가능한 방 목록
-function setRoomList(roomList){
-    roomList.forEach(element => {
-        let li = document.createElement(li);
-        li.innerText = element;
-        ableRooms.appendChild(li);
-    });
-}
+// function setRoomList(roomList){
+//     roomList.forEach(element => {
+//         let li = document.createElement(li);
+//         li.innerText = element;
+//         ableRooms.appendChild(li);
+//     });
+// }
 
 // 메시지 입력창 보이기
 function showRoom(){
@@ -77,6 +77,16 @@ socket.on("new_message",(msg)=>{
     addMessage(msg);
 })
 // // 접속 가능한 방들 보여주기?
-// socket.on("roomList",(roomList)=>{
-//     setRoomList(roomList);
-// })
+socket.on("room_change",(rooms)=>{
+    // console.log(rooms); // 이건 브라우저의 콘솔에 뜨는거얌 ^_^
+    const roomList = document.querySelector("#forEveryone ul");
+    roomList.innerHTML ="";
+    if(rooms.length ===0){
+        return;
+    }
+    rooms.forEach((room)=>{
+        const li = document.createElement("li");
+        li.innerText = room;
+        roomList.append(li);
+    });
+})
