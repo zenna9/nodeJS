@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket</title>
+</head>
+<body>
+    <header>
+        <h1>Socket.iossss</h1>
+        <hr/>
+        <div id="forEveryone">
+            <h4>Open Rooms : 
+                <ul> </ul>
+            </h4>
+            <hr/>
+        </div>
+    </header>
+    <main> 
+        <div id="welcome">
+            <form>
+                <input type="text" placeholder="room name" required>
+                <button>Enter Room,.,.,.</button>
+            </form>
+        </div>
+        <div id="room"> 
+            <h3>room rio</h3>
+            <ul> </ul>
+            <form id="name">
+                <input type="text" placeholder="nickname" required/>
+                <button>nickname</button>
+            </form><form id="msg">
+                <input placeholder="message" required="" type="text"/>
+                <button>send</button></form>
+            </div>
+        </main>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../public/js/app.js"></script>
+</html>

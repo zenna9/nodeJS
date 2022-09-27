@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="hoursToMinutes.js"></script>
+    <script src="kmToMeter.js"></script>
+    <script type="text/babel">
+        const menuBar = document.getElementById("menuBar");
+        const root = document.querySelector("#root");
+        function App(){
+            const [index, setIndex] = React.useState("0");
+            console.log(index)
+            const onSelect = (event) =>{
+                setIndex(event.target.value);
+            }
+            return (
+                <div>
+                    <h1>변환기</h1>
+                    <hr/>
+                    <select name ="mainSelect" onChange={onSelect} value={index}>
+                        <option value="0">시간 to 분</option>
+                        <option value="1">km to meter</option>
+                        </select>
+                        {index==="0" ? <MinutesToHours/>:null}
+                        {index==="1" ? <KmToMiles/>:null}
+                    <hr/>
+                </div>
+            );
+        }
+        function MinutesToHours(){
+            // setAmount함수를 써서 amount를 바꿀건데, 초기값은 0
+            const [amount, setAmount] = React.useState(0); 
+            // filp 을 위한 boolean -> inverted
+            const [inverted, setInverted] = React.useState(false);
+
+            const onChange = (e)=>{
+                setAmount(e.target.value);
+            };
+
+            const reset = () => setAmount(0);
+
+            const onInvert = () => {
+                reset();
+                //현재값을 current변수로 받아서 바꿔줄거야
+                setInverted((current)=> !current);
+            };
+            return(
+                <div>
+                    <div>
+                        <label for="minutes">minutes</label>
+                        <input value={inverted ? amount * 60 : amount}
+                        id="minutes"
+                        placeholder="Minutes"
+                        type="number"
+                        onChange={onChange}
+                        disabled={inverted}
+                        />
+                    </div>
+                    <div>
+                        <label for="hours">hours</label>
+                        <input value={inverted ? amount : Math.round(amount/60)}
+                        id="hours"
+                        placeholder="Hours"
+                        type="number"
+                        onChange={onChange}
+                        disabled={!inverted}
+                        />
+                    </div>
+                    <div>
+                        <button onClick={reset}>reset</button>
+                        <button onClick={onInvert}>
+                            {inverted ? "Turn back":"Invert"}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        function KmToMiles(){
+            return(
+                <h1>kmtomiles is come</h1>
+            )
+        }   
+        ReactDOM.render(<App />,root);
+    </script>
+</html>
